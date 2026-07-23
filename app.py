@@ -9,7 +9,7 @@ from groq import Groq
 st.set_page_config(page_title="Lehem AI", page_icon="🤖", layout="wide")
 
 st.title("🤖 Lehem AI")
-st.write("Aadarsh Ka Personal AI Assistant")
+
 
 # System Instruction
 SYSTEM_INSTRUCTION = """
