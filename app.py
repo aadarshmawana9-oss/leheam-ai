@@ -36,7 +36,7 @@ st.sidebar.title("👤 User Account")
 
 # Login / Guest Option
 if not st.session_state.logged_in:
-    login_option = st.sidebar.radio("Kaise use karna chahte ho?", ["Guest Mode", "Login Karo"])
+    login_option = st.sidebar.radio("Kaise use karna chahte ho?", ["Guest Mode", "Login"])
     if login_option == "Login":
         user_input = st.sidebar.text_input("Username")
         pass_input = st.sidebar.text_input("Password", type="password")
