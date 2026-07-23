@@ -81,7 +81,7 @@ if st.sidebar.button("🗑️ Clear Current Chat"):
     st.session_state.all_chats[st.session_state.current_chat_id] = []
     st.rerun()
 
-st.write(f"Hello **{st.session_state.username}**! 👋 Tum **{st.session_state.current_chat_id}** mein ho.")
+st.write(f"Hello **{st.session_state.username}**! 👋")
 
 # --- CHAT SECTION ---
 # Hardcoded Groq API Key
