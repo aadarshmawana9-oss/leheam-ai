@@ -96,7 +96,7 @@ for message in current_messages:
             st.markdown(message["content"])
 
 # User Input
-if prompt := st.chat_input("Lehem AI se kuch bhi pucho..."):
+if prompt := st.chat_input("Ready to chat"):
     # First message in this chat tab? Inject system prompt!
     if len(current_messages) == 0:
         current_messages.append({"role": "system", "content": SYSTEM_INSTRUCTION})
