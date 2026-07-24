@@ -108,13 +108,13 @@ if prompt := st.chat_input("Ready to chat"):
 
     with st.chat_message("assistant"):
         with st.spinner("Lehem AI soch raha hai..."):
-            try:
+          try:
                 response = client.chat.completions.create(
                     model="llama-3.3-70b-versatile",
-                    messages=[{"role": m["role"], "content": m["content"]} for m in current_messages]
+                    messages=[{"role": m["role"], "content": m["content"]} for m in current_messages],
+                    stream=True  # <--- Streaming ON
                 )
-                bot_reply = response.choices[0].message.content
-                st.markdown(bot_reply)
+                bot_reply = st.write_stream(response)  # <--- Fast Type-writer Effect
                 # Save assistant response
                 current_messages.append({"role": "assistant", "content": bot_reply})
             except Exception as e:
