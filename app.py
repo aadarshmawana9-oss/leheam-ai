@@ -100,27 +100,49 @@ for message in current_messages:
             st.markdown(message["content"])
 
 # User Input
+# --- PHOTO UPLOAD & CHAT SECTION ---
+uploaded_file = st.file_uploader("📷 Photo upload karein (Optional)", type=["png", "jpg", "jpeg"])
+
+image_url = None
+if uploaded_file is not None:
+    st.image(uploaded_file, caption="Uploaded Image", width=300)
+    bytes_data = uploaded_file.getvalue()
+    base64_image = base64.b64encode(bytes_data).decode('utf-8')
+    image_url = f"data:image/jpeg;base64,{base64_image}"
+
 if prompt := st.chat_input("Ready to chat"):
-    # First message in this chat tab? Inject system prompt!
     if len(current_messages) == 0:
         current_messages.append({"role": "system", "content": SYSTEM_INSTRUCTION})
+    
+    # Text + Photo structure
+    if image_url:
+        user_content = [
+            {"type": "image_url", "image_url": {"url": image_url}},
+            {"type": "text", "text": prompt}
+        ]
+    else:
+        user_content = prompt
 
-    # Save user message
-    current_messages.append({"role": "user", "content": prompt})
+    current_messages.append({"role": "user", "content": user_content})
+    
     with st.chat_message("user"):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        with st.spinner("Lehem AI soch raha hai..."):
-          try:
+        with st.spinner("Lehem AI photo dekh kar soch raha hai..."):
+            try:
+                # Photo ke waqt Vision model, normal text ke waqt Fast model
+                selected_model = "llama-3.2-11b-vision-preview" if image_url else "llama-3.3-70b-versatile"
+                
                 response = client.chat.completions.create(
-                    model="llama-3.3-70b-versatile",
+                    model=selected_model,
                     messages=[{"role": m["role"], "content": m["content"]} for m in current_messages],
-                    stream=True  # <--- Streaming ON
+                    stream=True
                 )
-                bot_reply = st.write_stream(response)  # <--- Fast Type-writer Effect
-                # Save assistant response
+                bot_reply = st.write_stream(response)
                 current_messages.append({"role": "assistant", "content": bot_reply})
+            except Exception as e:
+                st.error(f"Error aaya bhai: {e}")
             except Exception as e:
                 st.error(f"Error aaya bhai: {e}")
 
