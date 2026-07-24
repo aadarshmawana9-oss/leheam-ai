@@ -119,3 +119,15 @@ if prompt := st.chat_input("Ready to chat"):
                 current_messages.append({"role": "assistant", "content": bot_reply})
             except Exception as e:
                 st.error(f"Error aaya bhai: {e}")
+
+# Streamlit footer aur Manage app button hide karne ke liye
+hide_streamlit_style = """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    div[data-testid="stStatusWidget"] {visibility: hidden;}
+    [data-testid="stActionButtonContainer"] {display: none !important;}
+    </style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
