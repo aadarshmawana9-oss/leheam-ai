@@ -5,7 +5,7 @@ from groq import Groq
 st.set_page_config(page_title="Lehem AI", page_icon="🤖", layout="wide")
 
 st.title("🤖 Lehem AI")
-st.write("Aadarsh Ka Personal AI Assistant")
+st.write("AI Assistant")
 
 # System Instruction
 SYSTEM_INSTRUCTION = """
@@ -32,8 +32,8 @@ st.sidebar.title("👤 User Account")
 
 # Login / Guest Option
 if not st.session_state.logged_in:
-    login_option = st.sidebar.radio("Kaise use karna chahte ho?", ["Guest Mode", "Login Karo"])
-    if login_option == "Login Karo":
+    login_option = st.sidebar.radio("how do you want to use it ?", ["Guest Mode", "Login"])
+    if login_option == "Login":
         user_input = st.sidebar.text_input("Username")
         pass_input = st.sidebar.text_input("Password", type="password")
         if st.sidebar.button("Log In"):
@@ -43,7 +43,7 @@ if not st.session_state.logged_in:
                 st.sidebar.success(f"Welcome, {user_input}!")
                 st.rerun()
             else:
-                st.sidebar.error("Kripya username dalein!")
+                st.sidebar.error("enter username!")
 else:
     st.sidebar.write(f"Logged in as: **{st.session_state.username}**")
     if st.sidebar.button("Log Out"):
@@ -92,7 +92,7 @@ for message in current_messages:
             st.markdown(message["content"])
 
 # User Input
-if prompt := st.chat_input("Lehem AI se kuch bhi pucho..."):
+if prompt := st.chat_input("Ask anything to Lehem AI..."):
     # First message in this chat tab? Inject system prompt!
     if len(current_messages) == 0:
         current_messages.append({"role": "system", "content": SYSTEM_INSTRUCTION})
@@ -103,7 +103,7 @@ if prompt := st.chat_input("Lehem AI se kuch bhi pucho..."):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        with st.spinner("Lehem AI soch raha hai..."):
+        with st.spinner("Lehem AI is thinking..."):
             try:
                 response = client.chat.completions.create(
                     model="llama-3.3-70b-versatile",
@@ -114,4 +114,4 @@ if prompt := st.chat_input("Lehem AI se kuch bhi pucho..."):
                 # Save assistant response
                 current_messages.append({"role": "assistant", "content": bot_reply})
             except Exception as e:
-                st.error(f"Error aaya bhai: {e}")
+                st.error(f"Error: {e}")
