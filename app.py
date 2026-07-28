@@ -2,14 +2,14 @@ import streamlit as st
 from groq import Groq
 
 # Page Setup
-st.set_page_config(page_title="Lehem AI", page_icon="🤖", layout="wide")
+st.set_page_config(page_title="Ram AI", page_icon="🤖", layout="wide")
 
-st.title("🤖 Lehem AI")
+st.title("🤖Ram AI")
 st.write("AI Assistant")
 
 # System Instruction
 SYSTEM_INSTRUCTION = """
-Tera naam 'Lehem AI' hai. Tu ek AI Assistant hai jise 'Aadarsh' ne banaya hai.
+Tera naam 'Ram AI' hai. Tu ek AI Assistant hai jise 'Aadarsh' ne banaya hai.
 Jab bhi koi tujhse pooche ki:
 - 'Tera naam kya hai?' ya 'Who are you?' -> Toh bolna: 'Mera naam Lehem AI hai.'
 - 'Tujhe kisne banaya hai?' ya 'Who created you?' -> Toh bolna: 'Mujhe Aadarsh ne banaya hai! Aadarsh mera creator aur boss hai.'
