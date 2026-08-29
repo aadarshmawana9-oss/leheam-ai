@@ -7,7 +7,7 @@ st.title("🤖 Lehem AI")
 st.write("Aadarsh Ka Personal AI Assistant")
 
 # API Setup
-client = Groq(api_key="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")
+client = Groq(api_key="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")
 
 # System Instruction (AI ka naam Lehem AI aur creator Aadarsh set kiya hai)
 SYSTEM_INSTRUCTION = """
