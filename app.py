@@ -1,5 +1,5 @@
 import streamlit as st
-from groq import Groq
+import google.generativeai as genai
 
 # Page Setup
 st.set_page_config(page_title="Ram AI", page_icon="🤖", layout="wide")
@@ -7,7 +7,7 @@ st.set_page_config(page_title="Ram AI", page_icon="🤖", layout="wide")
 st.title("🤖Ram AI")
 st.write("AI Assistant")
 
-# System Instruction
+# System Instruction / Persona
 SYSTEM_INSTRUCTION = """
 Tera naam 'Ram AI' hai. Tu ek AI Assistant hai jise 'Aadarsh' ne banaya hai.
 Jab bhi koi tujhse pooche ki:
@@ -15,6 +15,19 @@ Jab bhi koi tujhse pooche ki:
 - 'Tujhe kisne banaya hai?' ya 'Who created you?' -> Toh bolna: 'Mujhe Aadarsh jo ki Sunit kumar ka aur Preeti ka beta hai unhone banaya hai! Aadarsh mera creator aur boss hai.'
 Baaki sabhi sawalon ke jawab Hinglish mein friendly aur mast tarike se dena.
 """
+
+# --- CONFIGURE GEMINI API ---
+genai.configure(api_key="AQ.Ab8RN6JeKV5Z3amtqu_r-d_2bU5Vyj3eV67L_Do5QUG3DZN5tA")
+
+# Initialize Gemini Model with System Instruction
+generation_config = {
+    "temperature": 0.7,
+}
+model = genai.GenerativeModel(
+    model_name="gemini-1.5-flash",
+    generation_config=generation_config,
+    system_instruction=SYSTEM_INSTRUCTION
+)
 
 # --- SESSION STATES INITIALIZATION ---
 if "logged_in" not in st.session_state:
@@ -80,38 +93,35 @@ if st.sidebar.button("🗑️ Clear Current Chat"):
 st.write(f"Hello **{st.session_state.username}**! 👋 Tum **{st.session_state.current_chat_id}** mein ho.")
 
 # --- CHAT SECTION ---
-# Hardcoded Groq API Key
-client = Groq(api_key="AQ.Ab8RN6JeKV5Z3amtqu_r-d_2bU5Vyj3eV67L_Do5QUG3DZN5tA")
-
 current_messages = st.session_state.all_chats[st.session_state.current_chat_id]
 
-# Display Chat History (Hide System Prompt)
+# Display Chat History
 for message in current_messages:
-    if message["role"] != "system":
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
 # User Input
-if prompt := st.chat_input("Ask anything to Lehem AI..."):
-    # First message in this chat tab? Inject system prompt!
-    if len(current_messages) == 0:
-        current_messages.append({"role": "system", "content": SYSTEM_INSTRUCTION})
-
+if prompt := st.chat_input("Ask anything to Ram AI..."):
     # Save user message
     current_messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        with st.spinner("Lehem AI is thinking..."):
+        with st.spinner("Ram AI is thinking..."):
             try:
-                response = client.chat.completions.create(
-                    model="llama-3.1-8b-instant",
-                    messages=[{"role": m["role"], "content": m["content"]} for m in current_messages]
-                )
-                bot_reply = response.choices[0].message.content
+                # Format chat history for Gemini
+                gemini_history = []
+                for m in current_messages[:-1]:
+                    role = "user" if m["role"] == "user" else "model"
+                    gemini_history.append({"role": role, "parts": [m["content"]]})
+                
+                chat_session = model.start_chat(history=gemini_history)
+                response = chat_session.send_message(prompt)
+                bot_reply = response.text
+                
                 st.markdown(bot_reply)
                 # Save assistant response
-                current_messages.append({"role": "assistant", "content": bot_reply})
+                current_messages.append({"role": "model", "content": bot_reply})
             except Exception as e:
                 st.error(f"Error: {e}")
