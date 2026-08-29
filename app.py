@@ -46,7 +46,7 @@ if prompt := st.chat_input("Lehem AI se kuch bhi pucho..."):
                 
                 # Groq Chat Completion Endpoint Call - FIXED WORKING MODEL NAME
                 response = client.chat.completions.create(
-                    model="llama-3.3-70b-specdec",
+                   model="llama-3.3-70b-versatile",
                     messages=api_payload,
                     temperature=0.7
                 )
