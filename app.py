@@ -44,14 +44,14 @@ if prompt := st.chat_input("Lehem AI se kuch bhi pucho..."):
                 # System prompt ko har dynamic request ke zero index par prepend karo
                 api_payload = [{"role": "system", "content": SYSTEM_INSTRUCTION}] + st.session_state.chat_history
                 
-                # Groq Chat Completion Endpoint Call - MODEL CHANGED TO STABLE VERSION
+                # Groq Chat Completion Endpoint Call - FIXED WORKING MODEL NAME
                 response = client.chat.completions.create(
                     model="llama-3.3-70b-specdec",
                     messages=api_payload,
                     temperature=0.7
                 )
                 
-                # Sahi object structure parsing syntax
+                # Sahi object structure parsing syntax for Groq SDK
                 ai_response = response.choices[0].message.content
                 st.markdown(ai_response)
                 
