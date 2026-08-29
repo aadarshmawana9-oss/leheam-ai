@@ -81,7 +81,7 @@ st.write(f"Hello **{st.session_state.username}**! 👋 Tum **{st.session_state.c
 
 # --- CHAT SECTION ---
 # Hardcoded Groq API Key
-client = Groq(api_key="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")
+client = Groq(api_key="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")
 
 current_messages = st.session_state.all_chats[st.session_state.current_chat_id]
 
