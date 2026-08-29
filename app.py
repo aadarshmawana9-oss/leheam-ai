@@ -17,7 +17,7 @@ Baaki sabhi sawalon ke jawab Hinglish mein friendly aur mast tarike se dena.
 """
 
 # --- CONFIGURE GEMINI API ---
-genai.configure(api_key="AQ.Ab8RN6JeKV5Z3amtqu_r-d_2bU5Vyj3eV67L_Do5QUG3DZN5tA")
+genai.configure(api_key="AQ.Ab8RN6LqNjNPuTzEr8sLsyRI5NU1xF7lfoHaBEu6CB68cYOAIg")
 
 # Initialize Gemini Model with System Instruction
 generation_config = {
